@@ -18,6 +18,9 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+#ifndef TX_H
+#define TX_H
+
 struct	tx_request
 {
 	short	iType;
@@ -41,4 +44,5 @@ struct	tx_queue
 	enum Functions ft;
 	HTASK	htask;
 };
+#endif
 #endif

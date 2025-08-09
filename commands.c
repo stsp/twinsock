@@ -19,6 +19,9 @@
  */
 
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <netdb.h>
@@ -27,6 +30,7 @@
 #include "twinsock.h"
 #include "tx.h"
 #include "wserror.h"
+#include "funcs.h"
 
 #ifdef NEED_H_ERRNO
 extern int h_errno;
@@ -680,4 +684,3 @@ SendSocketData(int iSocket,
 		(ft == FN_Data) ? iSocket : -2);
 	free(ptxr);
 }
-

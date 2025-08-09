@@ -18,6 +18,9 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+#ifndef TWINSOCK_H
+#define TWINSOCK_H
+
 enum	arg_type
 {
 	AT_Int16 = 1,
@@ -158,4 +161,5 @@ struct	per_socket
 		  tf.pfaList = args, \
 		  tf.pfaResult = &retval )
 
+#endif
 #endif

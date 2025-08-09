@@ -52,4 +52,3 @@ About(HWND hwndParent)
 	DialogBox(hinst, "ABOUT_DLG", hwndParent, fpDlgProc);
 	FreeProcInstance(fpDlgProc);
 }
-

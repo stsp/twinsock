@@ -589,4 +589,3 @@ WinMain(HINSTANCE	hInstance,
 		}
 	}
 }
-

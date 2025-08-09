@@ -2,12 +2,6 @@
 # Remove all carriage returns and Control-Zs
 rm -f a.out test.c
 rm -f *.o tshost
-echo "Cleaning the source code of MS-DOS control characters"
-for i in *.c *.h
-do
-	tr -d '\015\032' < $i > tempfile
-	mv tempfile $i
-done
 
 # Test for a few things we need to know about
 
@@ -39,7 +33,7 @@ fi
 # because what we find may not be a compiler, so we test for
 # an a.out file.
 
-echo "main(int argc, char **argv) { return (int) argv[argc]; }" > test.c
+echo "int main(int argc, char **argv) { return (int) argv[argc]; }" > test.c
 echo "Attempting to find a compiler that will work"
 for i in bsdcc ucbcc cc acc gcc /usr/local/bin/gcc
 do
@@ -60,7 +54,7 @@ esac
 
 echo "Using $CC as the C compiler"
 
-echo "main() {}" > test.c
+echo "int main() {}" > test.c
 
 echo "Testing for -lsocket"
 if $CC test.c -lsocket > /dev/null 2>/dev/null
@@ -101,7 +95,8 @@ else
 	echo "You don't appear to need -lnsl"
 fi
 
-echo "main() {char *pch1, *pch2; memcpy(pch1, pch2, 10); memset(pch1, 0, 10); }" > test.c
+echo "#include <string.h>
+int main() {char *pch1, *pch2; memcpy(pch1, pch2, 10); memset(pch1, 0, 10); }" > test.c
 if $CC test.c > /dev/null 2>&1
 then
 	echo "You have memcpy and memset"
@@ -112,12 +107,12 @@ fi
 
 echo "Testing for h_errno"
 echo "#include <netdb.h>
-main() { return h_errno; }" > test.c
+int main() { return h_errno; }" > test.c
 if $CC test.c > /dev/null 2>&1
 then
 	echo "h_errno is where it should be"
 else
-	echo "extern int h_errno; main() { return h_errno; }" > test.c
+	echo "extern int h_errno; int main() { return h_errno; }" > test.c
 	if $CC test.c > /dev/null 2>&1
 	then
 		echo "h_errno is not declared in netdb.h, but exists"
@@ -142,5 +137,4 @@ echo "	${CC} -o tshost ${OBJECTS} ${L_NSL} ${L_RESOLV} ${L_SOCKET}" >> Makefile
 echo
 echo 'Running "make"'
 echo
-exec make
-
+exec make -f Makefile

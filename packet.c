@@ -19,6 +19,8 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #ifdef __MSDOS__
 #include <winsock.h>
 #include <stdlib.h>
@@ -27,6 +29,7 @@
 #include <netinet/in.h>
 #endif
 #include "packet.h"
+#include "funcs.h"
 
 #define	MAX_STREAMS	256
 #define	WINDOW_SIZE	4
@@ -499,7 +502,7 @@ void	ProcessData(void *pvData, int nDataLen)
 					break;
 
 				case PT_Shutdown:
-					Shutdown(0);
+					Shutdown();
 					break;
 				}
 			}
@@ -639,4 +642,3 @@ ReInitPackets(void)
 	FlushQueue(&ppqList);
 	memset(aiStreams, 0, sizeof(aiStreams));
 }
-

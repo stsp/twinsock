@@ -21,6 +21,9 @@
 #include <sys/types.h>
 #include <sys/time.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 #include <netinet/in.h>
 #include <errno.h>
 #ifdef NEED_SELECT_H
@@ -28,8 +31,7 @@
 #endif
 #include "twinsock.h"
 #include "tx.h"
-
-extern	void	PacketTransmitData(void *pvData, int iDataLen, int iStream);
+#include "funcs.h"
 
 #define	BUFFER_SIZE	1024
 
@@ -66,7 +68,7 @@ int	SetClosed(int iValue)
 	FD_CLR(iValue, &fdsActive);
 }
 
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 	fd_set	fdsRead, fdsWrite, fdsExcept, fdsDummy;
 	int	nRead;
@@ -138,7 +140,7 @@ main(int argc, char **argv)
 				if (FD_ISSET(i, &fdsListener))
 				{
 					s = accept(i,
-						&saSource,
+						(struct sockaddr *)&saSource,
 						&nSourceLen);
 					if (s == -1)
 						continue;
@@ -157,7 +159,7 @@ main(int argc, char **argv)
 							achBuffer,
 							BUFFER_SIZE,
 							0,
-							&saSource,
+							(struct sockaddr *)&saSource,
 							&nSourceLen);
 					if (nRead < 0 &&
 					    errno == ENOTCONN)

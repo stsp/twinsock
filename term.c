@@ -26,6 +26,8 @@
 #ifdef NEED_TTOLD_H
 #include <sys/ttold.h>
 #endif
+#include <termios.h>
+#include <unistd.h>
 
 #if !defined(CBREAK) && defined(O_CBREAK)
 #define CBREAK O_CBREAK
@@ -58,28 +60,18 @@
 #define CTLECH O_CTLECH
 #endif
 
-struct	sgttyb Old;
-struct	sgttyb New;
+struct	termios Old;
+struct	termios New;
 
 void	InitTerm(void)
 {
-	ioctl(0, TIOCGETP, &Old);
+	tcgetattr(0, &Old);
 	New = Old;
-	New.sg_flags |= CBREAK | RAW;
-#ifdef PASS8
-	New.sg_flags |= PASS8;
-#endif
-#ifdef DECCTQ
-	New.sg_flags |= DECCTQ;
-#endif
-#ifdef LITOUT
-	New.sg_flags |= LITOUT;
-#endif
-	New.sg_flags &= ~(ECHO | CRMOD | TILDE | NOHANG | CTLECH);
-	ioctl(0, TIOCSETP, &New);
+	cfmakeraw(&New);
+	tcsetattr(0, TCSANOW, &New);
 }
 
 void	UnInitTerm(void)
 {
-	ioctl(0, TIOCSETP, &Old);
+	tcsetattr(0, TCSANOW, &Old);
 }

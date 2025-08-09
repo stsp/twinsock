@@ -11,4 +11,3 @@ memcpy(char *pvDest, char *pvSource, int nBytes)
 	while (nBytes--)
 		*pvDest++ = *pvSource++;
 }
-
