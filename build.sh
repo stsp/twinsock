@@ -129,7 +129,7 @@ OBJECTS="tshost.o packet.o commands.o term.o $NEED_MEM"
 
 echo "Building makefile"
 echo ".c.o:" > Makefile
-echo "	${CC} ${SELECT_H} ${TTOLD_H} ${SGTTY_H} ${H_ERRNO} -c "'$*.c' >> Makefile
+echo "	${CC} ${SELECT_H} ${TTOLD_H} ${SGTTY_H} ${H_ERRNO} -ggdb3 -c "'$*.c' >> Makefile
 echo >> Makefile
 echo "tshost: ${OBJECTS}" >> Makefile
 echo "	${CC} -o tshost ${OBJECTS} ${L_NSL} ${L_RESOLV} ${L_SOCKET}" >> Makefile
